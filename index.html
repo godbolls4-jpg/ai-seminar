@@ -398,42 +398,44 @@ td.k{font-weight:800;color:var(--navy2);white-space:nowrap}
 .v2 .new .st small{font-size:13.5px}
 .v2 .th{width:84px;height:42px}
 .v2 .tx{white-space:nowrap}
-.v2 .new .st{transition:background .25s,transform .25s,box-shadow .25s;cursor:default;position:relative}
-.v2 .new .st:hover{background:rgba(217,184,120,.16);transform:translateX(-4px);box-shadow:0 0 0 1.5px #d9b878 inset;z-index:5}
+.v2 .new .st{transition:background .25s,transform .25s,box-shadow .25s;cursor:pointer;position:relative}
+.v2 .new .st:not(.open):hover{background:rgba(217,184,120,.08)}
+.v2 .new .st::after{content:"눌러서 크게";position:absolute;right:112px;top:6px;font-size:10.5px;color:#d9b878;opacity:0;transition:opacity .2s}.v2 .new .st:not(.open):hover::after{opacity:.85}
+.v2 .new .st.open{background:rgba(217,184,120,.16);transform:translateX(-4px);box-shadow:0 0 0 1.5px #d9b878 inset;z-index:5}
 .v2 .th{transition:transform .35s cubic-bezier(.3,1.5,.5,1),box-shadow .35s;transform-origin:right center;position:relative;z-index:2}
-.v2 .new .st:hover .th{transform:scale(1.9);box-shadow:0 0 0 1.5px #d9b878,0 14px 30px rgba(0,0,0,.55)}
+.v2 .new .st.open .th{transform:scale(1.9);box-shadow:0 0 0 1.5px #d9b878,0 14px 30px rgba(0,0,0,.55)}
 .v2 .th>*{transform-box:fill-box;transform-origin:center}
-.v2 .new .st:hover .th>*{animation:thpop .45s cubic-bezier(.3,1.4,.5,1) both}
-.v2 .new .st:hover .th>*:nth-child(1){animation-delay:0.05s}
-.v2 .new .st:hover .th>*:nth-child(2){animation-delay:0.10s}
-.v2 .new .st:hover .th>*:nth-child(3){animation-delay:0.15s}
-.v2 .new .st:hover .th>*:nth-child(4){animation-delay:0.20s}
-.v2 .new .st:hover .th>*:nth-child(5){animation-delay:0.25s}
-.v2 .new .st:hover .th>*:nth-child(6){animation-delay:0.30s}
-.v2 .new .st:hover .th>*:nth-child(7){animation-delay:0.35s}
-.v2 .new .st:hover .th>*:nth-child(8){animation-delay:0.40s}
-.v2 .new .st:hover .th>*:nth-child(9){animation-delay:0.45s}
-.v2 .new .st:hover .th>*:nth-child(10){animation-delay:0.50s}
-.v2 .new .st:hover .th>*:nth-child(11){animation-delay:0.55s}
-.v2 .new .st:hover .th>*:nth-child(12){animation-delay:0.60s}
-.v2 .new .st:hover .th>*:nth-child(13){animation-delay:0.65s}
-.v2 .new .st:hover .th>*:nth-child(14){animation-delay:0.70s}
-.v2 .new .st:hover .th>*:nth-child(15){animation-delay:0.75s}
-.v2 .new .st:hover .th>*:nth-child(16){animation-delay:0.80s}
-.v2 .new .st:hover .th>*:nth-child(17){animation-delay:0.85s}
-.v2 .new .st:hover .th>*:nth-child(18){animation-delay:0.90s}
-.v2 .new .st:hover .th>*:nth-child(19){animation-delay:0.95s}
-.v2 .new .st:hover .th>*:nth-child(20){animation-delay:1.00s}
-.v2 .new .st:hover .th>*:nth-child(21){animation-delay:1.05s}
-.v2 .new .st:hover .th>*:nth-child(22){animation-delay:1.10s}
-.v2 .new .st:hover .th>*:nth-child(23){animation-delay:1.15s}
-.v2 .new .st:hover .th>*:nth-child(24){animation-delay:1.20s}
-.v2 .new .st:hover .th>*:nth-child(25){animation-delay:1.25s}
-.v2 .new .st:hover .th>*:nth-child(26){animation-delay:1.30s}
-.v2 .new .st:hover .th>*:nth-child(27){animation-delay:1.35s}
-.v2 .new .st:hover .th>*:nth-child(28){animation-delay:1.40s}
-.v2 .new .st:hover .th>*:nth-child(29){animation-delay:1.45s}
-.v2 .new .st:hover .th>*:nth-child(30){animation-delay:1.50s}
+.v2 .new .st.open .th>*{animation:thpop .45s cubic-bezier(.3,1.4,.5,1) both}
+.v2 .new .st.open .th>*:nth-child(1){animation-delay:0.05s}
+.v2 .new .st.open .th>*:nth-child(2){animation-delay:0.10s}
+.v2 .new .st.open .th>*:nth-child(3){animation-delay:0.15s}
+.v2 .new .st.open .th>*:nth-child(4){animation-delay:0.20s}
+.v2 .new .st.open .th>*:nth-child(5){animation-delay:0.25s}
+.v2 .new .st.open .th>*:nth-child(6){animation-delay:0.30s}
+.v2 .new .st.open .th>*:nth-child(7){animation-delay:0.35s}
+.v2 .new .st.open .th>*:nth-child(8){animation-delay:0.40s}
+.v2 .new .st.open .th>*:nth-child(9){animation-delay:0.45s}
+.v2 .new .st.open .th>*:nth-child(10){animation-delay:0.50s}
+.v2 .new .st.open .th>*:nth-child(11){animation-delay:0.55s}
+.v2 .new .st.open .th>*:nth-child(12){animation-delay:0.60s}
+.v2 .new .st.open .th>*:nth-child(13){animation-delay:0.65s}
+.v2 .new .st.open .th>*:nth-child(14){animation-delay:0.70s}
+.v2 .new .st.open .th>*:nth-child(15){animation-delay:0.75s}
+.v2 .new .st.open .th>*:nth-child(16){animation-delay:0.80s}
+.v2 .new .st.open .th>*:nth-child(17){animation-delay:0.85s}
+.v2 .new .st.open .th>*:nth-child(18){animation-delay:0.90s}
+.v2 .new .st.open .th>*:nth-child(19){animation-delay:0.95s}
+.v2 .new .st.open .th>*:nth-child(20){animation-delay:1.00s}
+.v2 .new .st.open .th>*:nth-child(21){animation-delay:1.05s}
+.v2 .new .st.open .th>*:nth-child(22){animation-delay:1.10s}
+.v2 .new .st.open .th>*:nth-child(23){animation-delay:1.15s}
+.v2 .new .st.open .th>*:nth-child(24){animation-delay:1.20s}
+.v2 .new .st.open .th>*:nth-child(25){animation-delay:1.25s}
+.v2 .new .st.open .th>*:nth-child(26){animation-delay:1.30s}
+.v2 .new .st.open .th>*:nth-child(27){animation-delay:1.35s}
+.v2 .new .st.open .th>*:nth-child(28){animation-delay:1.40s}
+.v2 .new .st.open .th>*:nth-child(29){animation-delay:1.45s}
+.v2 .new .st.open .th>*:nth-child(30){animation-delay:1.50s}
 @keyframes thpop{0%{opacity:0;transform:scale(.4) translateY(4px)}100%{opacity:1;transform:none}}
 svg.ill{display:block;width:100%;max-width:230px;height:auto;max-height:84px;margin:auto auto 8px;overflow:visible}
 svg.ill *{transform-box:fill-box;transform-origin:center}
@@ -1037,5 +1039,5 @@ new MutationObserver(()=>{if(sec.classList.contains('on'))run()}).observe(sec,{a
 const P=[...Array(70)].map(()=>({a:Math.random()*6.28,r:120+Math.random()*320,s:(Math.random()*.002+.0006)*(Math.random()<.5?-1:1),z:Math.random()}));
 function f(){if(sec.classList.contains('on')||!x._d){x._d=1;x.clearRect(0,0,1280,720);P.forEach(p=>{if(!rm)p.a+=p.s;const px=700+Math.cos(p.a)*p.r,py=300+Math.sin(p.a)*p.r*.55;
 x.fillStyle=`rgba(95,212,255,${.25+p.z*.5})`;x.beginPath();x.arc(px,py,1+p.z*1.6,0,7);x.fill()})}if(!rm)requestAnimationFrame(f)}f()})();
-document.querySelectorAll('.kt').forEach(k=>k.addEventListener('click',e=>{e.stopPropagation();const b=k.querySelector('.ktb');const c=b.cloneNode(true);b.replaceWith(c)}));
+document.querySelectorAll('.v2 .new .st').forEach(r=>r.addEventListener('click',e=>{e.stopPropagation();const on=r.classList.contains('open');r.parentNode.querySelectorAll('.st.open').forEach(x=>x.classList.remove('open'));if(!on)r.classList.add('open')})); document.querySelectorAll('.kt').forEach(k=>k.addEventListener('click',e=>{e.stopPropagation();const b=k.querySelector('.ktb');const c=b.cloneNode(true);b.replaceWith(c)}));
 </script><div id="rot">📱 가로로 돌리면 크게 보여요 · 넘기기: 화면 터치/스와이프</div></body></html>
