@@ -1060,10 +1060,10 @@ b,.r,.qt em,.nw{white-space:nowrap}
 </div></div>
 <script>
 const S=[...document.querySelectorAll('.slide')],st=document.getElementById('stage');let i=0;
-try{const h=parseInt(location.hash.slice(1));if(h>=1&&h<=S.length)i=h-1}catch(e){}
+try{if(location.hash)history.replaceState(null,'',location.pathname+location.search)}catch(e){}
 S.forEach((s,k)=>{const p=s.querySelector('.pg');if(p)p.textContent=(k+1)+' / '+S.length});
 function fit(){const W=(window.visualViewport&&visualViewport.width)||innerWidth,H=(window.visualViewport&&visualViewport.height)||innerHeight;const k=Math.min(W/1280,H/720);st.style.transform='scale('+k+')';document.documentElement.style.setProperty('--lbk',Math.min(W*.97/1180,H*.96/720,1))}
-function show(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle('on',k===i));document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
+function show(n){i=Math.max(0,Math.min(S.length-1,n));S.forEach((s,k)=>s.classList.toggle('on',k===i));document.getElementById('bar').style.width=((i+1)/S.length*100)+'%';}
 addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,250));window.visualViewport&&visualViewport.addEventListener('resize',fit);fit();show(i);
 addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();show(i+1)}else if(['ArrowLeft','PageUp','Backspace'].includes(e.key)){e.preventDefault();show(i-1)}else if(e.key==='Home')show(0);else if(e.key==='End')show(S.length-1);else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}else if(e.key==='p'||e.key==='P')print()});
 st.addEventListener('click',e=>{show(e.clientX<innerWidth/3?i-1:i+1)});
