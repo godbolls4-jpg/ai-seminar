@@ -121,6 +121,7 @@ public class UsageService extends Service {
             alarms++;
         }
         p.edit().putLong(Prefs.TODAY_MS, today).putLong(Prefs.SESSION_MS, session)
+                .putLong(Prefs.DAY_PREFIX + p.getString(Prefs.DAY, Prefs.today()), today)
                 .putInt(Prefs.ALARMS_TODAY, alarms).apply();
         refreshStatus();
     }

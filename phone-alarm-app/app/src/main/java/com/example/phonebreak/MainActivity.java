@@ -30,7 +30,8 @@ public class MainActivity extends Activity {
     private static final int DARK = Color.parseColor("#111827");
 
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private TextView todayText, leftText, alarmsText;
+    private TextView todayText, leftText, alarmsText, weekAvgText, weekCompareText;
+    private WeekChartView weekChart;
     private ProgressBar progress;
     private Button toggleBtn;
     private final Button[] intervalBtns = new Button[INTERVALS.length];
@@ -112,6 +113,20 @@ public class MainActivity extends Activity {
         alarmsText = text("-", 13, false, Color.GRAY);
         stat.addView(alarmsText);
         root.addView(stat);
+
+        // 주간 통계
+        LinearLayout week = card();
+        week.addView(text("📊 최근 7일 통계", 15, true, DARK));
+        weekAvgText = text("-", 22, true, DARK);
+        week.addView(weekAvgText);
+        weekCompareText = text("-", 13, false, Color.GRAY);
+        week.addView(weekCompareText);
+        weekChart = new WeekChartView(this);
+        LinearLayout.LayoutParams wlp = new LinearLayout.LayoutParams(-1, dp(170));
+        wlp.topMargin = dp(10);
+        week.addView(weekChart, wlp);
+        week.addView(text("점선 = 하루 평균", 11, false, Color.GRAY));
+        root.addView(week);
 
         // 켜기/끄기
         toggleBtn = plainButton("");
@@ -201,6 +216,41 @@ public class MainActivity extends Activity {
         refresh();
     }
 
+    /** 최근 7일(오늘 포함) 평균과 그 전 7일 평균 비교 */
+    private void refreshWeek(SharedPreferences p) {
+        long[] vals = new long[7];
+        String[] labels = new String[7];
+        long sum = 0;
+        int days = 0;
+        for (int i = 0; i < 7; i++) {
+            int offset = i - 6;               // -6(6일 전) ~ 0(오늘)
+            vals[i] = Prefs.usageOn(p, offset);
+            labels[i] = Prefs.weekday(offset);
+            if (vals[i] >= 0) { sum += vals[i]; days++; }
+        }
+        long avg = days > 0 ? sum / days : 0;
+        weekChart.setData(vals, labels, avg);
+        weekAvgText.setText("하루 평균 " + Prefs.fmt(avg));
+
+        long prevSum = 0;
+        int prevDays = 0;
+        for (int offset = -13; offset <= -7; offset++) {
+            long v = Prefs.usageOn(p, offset);
+            if (v >= 0) { prevSum += v; prevDays++; }
+        }
+        String info = "기록된 " + days + "일 기준 · 7일 합계 " + Prefs.fmt(sum);
+        if (prevDays > 0) {
+            long prevAvg = prevSum / prevDays;
+            long diff = avg - prevAvg;
+            if (Math.abs(diff) < 60_000) info += "\n지난주와 비슷해요";
+            else if (diff < 0) info += "\n지난주보다 하루 " + Prefs.fmt(-diff) + " 줄었어요 👍";
+            else info += "\n지난주보다 하루 " + Prefs.fmt(diff) + " 늘었어요 😥";
+        } else {
+            info += "\n지난주 기록이 쌓이면 비교해 드려요";
+        }
+        weekCompareText.setText(info);
+    }
+
     private void refresh() {
         SharedPreferences p = Prefs.get(this);
         Prefs.rollDay(p);
@@ -224,6 +274,7 @@ public class MainActivity extends Activity {
         toggleBtn.setTextColor(Color.WHITE);
         toggleBtn.setText(enabled ? "⏸ 측정 멈추기" : "▶ 측정 시작하기");
 
+        refreshWeek(p);
         paintChoices(INTERVALS, intervalBtns, interval);
         paintChoices(RESTS, restBtns, Prefs.restMin(this));
     }

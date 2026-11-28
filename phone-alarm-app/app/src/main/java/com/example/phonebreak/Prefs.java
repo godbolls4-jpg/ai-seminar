@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,12 +32,46 @@ final class Prefs {
     static int intervalMin(Context c) { return get(c).getInt(INTERVAL_MIN, 60); }
     static int restMin(Context c) { return get(c).getInt(REST_MIN, 10); }
 
-    /** 날짜가 바뀌었으면 오늘 기록을 0으로 */
+    static final String DAY_PREFIX = "d_";               // 날짜별 사용 시간 기록 (d_2026-11-28)
+    private static final int KEEP_DAYS = 90;
+
+    /** 날짜가 바뀌었으면 어제 기록을 보관하고 오늘 기록을 0으로 */
     static void rollDay(SharedPreferences p) {
         String t = today();
-        if (!t.equals(p.getString(DAY, ""))) {
-            p.edit().putString(DAY, t).putLong(TODAY_MS, 0).putInt(ALARMS_TODAY, 0).apply();
+        String prev = p.getString(DAY, "");
+        if (!t.equals(prev)) {
+            SharedPreferences.Editor e = p.edit();
+            if (!prev.isEmpty()) e.putLong(DAY_PREFIX + prev, p.getLong(TODAY_MS, 0));
+            e.putString(DAY, t).putLong(TODAY_MS, 0).putInt(ALARMS_TODAY, 0);
+            // 90일 지난 기록은 정리
+            String cutoff = dateKey(-KEEP_DAYS);
+            for (String k : p.getAll().keySet()) {
+                if (k.startsWith(DAY_PREFIX) && k.substring(DAY_PREFIX.length()).compareTo(cutoff) < 0) {
+                    e.remove(k);
+                }
+            }
+            e.apply();
         }
+    }
+
+    /** 오늘 기준 offset일 전/후 날짜 (예: -1 = 어제) */
+    static String dateKey(int offsetDays) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, offsetDays);
+        return new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(c.getTime());
+    }
+
+    /** 해당 날짜의 요일 한 글자 (월, 화, ...) */
+    static String weekday(int offsetDays) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_YEAR, offsetDays);
+        return new String[]{"일", "월", "화", "수", "목", "금", "토"}[c.get(Calendar.DAY_OF_WEEK) - 1];
+    }
+
+    /** 날짜별 사용 시간. 기록이 없으면 -1 */
+    static long usageOn(SharedPreferences p, int offsetDays) {
+        if (offsetDays == 0) return p.getLong(TODAY_MS, 0);
+        return p.getLong(DAY_PREFIX + dateKey(offsetDays), -1);
     }
 
     static String fmt(long ms) {
