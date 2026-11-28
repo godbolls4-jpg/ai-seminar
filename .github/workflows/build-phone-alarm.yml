@@ -1,0 +1,38 @@
+name: 폰 휴식 알람 APK 빌드
+
+on:
+  push:
+    paths:
+      - 'phone-alarm-app/**'
+      - '.github/workflows/build-phone-alarm.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: APK 빌드
+        working-directory: phone-alarm-app
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: 파일 이름 정리
+        run: cp phone-alarm-app/app/build/outputs/apk/debug/app-debug.apk phone-break-alarm.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: phone-break-alarm-apk
+          path: phone-break-alarm.apk
